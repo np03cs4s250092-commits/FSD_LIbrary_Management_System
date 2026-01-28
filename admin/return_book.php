@@ -2,9 +2,9 @@
 require_once "../includes/auth.php";
 require_once "../config/db.php";
 
-/* Fetch issued books */
+//fetching issued books
 $stmt = $pdo->query(
-    "SELECT issued_books.issue_id, students.name, books.title
+    "SELECT issued_books.issue_id, students.name, books.title, issued_books.issue_date
      FROM issued_books
      JOIN students ON issued_books.student_id = students.student_id
      JOIN books ON issued_books.book_id = books.book_id
@@ -12,7 +12,7 @@ $stmt = $pdo->query(
 );
 $issuedBooks = $stmt->fetchAll();
 
-/* Return book */
+//return books
 if (isset($_GET['return'])) {
     $issue_id = $_GET['return'];
 
@@ -73,6 +73,7 @@ if (isset($_GET['return'])) {
 <tr>
     <th>Student</th>
     <th>Book</th>
+    <th>Issue Date</th>
     <th>Action</th>
 </tr>
 
@@ -80,6 +81,7 @@ if (isset($_GET['return'])) {
 <tr>
     <td><?= htmlspecialchars($row['name']); ?></td>
     <td><?= htmlspecialchars($row['title']); ?></td>
+    <td><?= htmlspecialchars($row['issue_date']); ?></td>
     <td class="action-links">
         <a href="?return=<?= $row['issue_id']; ?>"
            onclick="return confirm('Return this book?')">Return</a>
