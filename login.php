@@ -4,8 +4,9 @@ require_once "config/db.php";
 
 $error = "";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST["username"];
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    $username = trim($_POST["username"]);
     $password = $_POST["password"];
 
     $stmt = $pdo->prepare("SELECT * FROM admins WHERE username = ?");
@@ -13,8 +14,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $admin = $stmt->fetch();
 
     if ($admin && password_verify($password, $admin["password"])) {
+
         $_SESSION["admin_id"] = $admin["admin_id"];
         $_SESSION["username"] = $admin["username"];
+
         header("Location: admin/dashboard.php");
         exit;
     } else {

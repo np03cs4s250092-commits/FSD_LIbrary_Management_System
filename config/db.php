@@ -1,20 +1,27 @@
 <?php
 
-$host = "localhost";
-$dbname = "Library_database";
-$username = "root";      
-$password = "";     
+if ($_SERVER['SERVER_NAME'] === 'localhost') {
+    $host = "localhost";
+    $user = "root";
+    $pass = "";
+    $db   = "library_database";
+} else {
+    $host = "localhost";
+    $user = "np03cs4s250092";
+    $pass = "DWNXH8Rbxc";
+    $db   = "np03cs4s250092";
+}
 
 try {
     $pdo = new PDO(
-        "mysql:host=$host;dbname=$dbname",
-        $username,
-        $password
+        "mysql:host=$host;dbname=$db;charset=utf8mb4",
+        $user,
+        $pass,
+        [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+        ]
     );
-
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
 } catch (PDOException $e) {
-    die("Database connection unsuccessful!");
+    die("Database connection failed");
 }
-
